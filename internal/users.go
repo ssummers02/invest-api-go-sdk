@@ -1,0 +1,84 @@
+package internal
+
+import (
+	pb "invest-api-go-sdk/internal/investapi"
+	"log"
+
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/grpclog"
+)
+
+type UsersServiceClient interface {
+	// GetAccounts The method of receiving user accounts.
+	GetAccounts() ([]*pb.Account, error)
+	// GetMarginAttributes Calculation of margin indicators on the account.
+	GetMarginAttributes(accountID string) (*pb.GetMarginAttributesResponse, error)
+	// GetUserTariff Request for the user's tariff.
+	GetUserTariff() (*pb.GetUserTariffResponse, error)
+	// GetInfo The method of obtaining information about the user.
+	GetInfo() (*pb.GetInfoResponse, error)
+}
+
+type UsersService struct {
+	client pb.UsersServiceClient
+	config TradeBotConfig
+}
+
+func NewUsersService(conn *grpc.ClientConn, config TradeBotConfig) *UsersService {
+	client := pb.NewUsersServiceClient(conn)
+
+	return &UsersService{
+		client: client,
+		config: config,
+	}
+}
+
+func (us UsersService) GetAccounts() (*pb.GetAccountsResponse, error) {
+	ctx, cancel := CreateRequestContext(us.config)
+	defer cancel()
+
+	response, err := us.client.GetAccounts(ctx, &pb.GetAccountsRequest{})
+
+	if err != nil {
+		log.Fatalf("fail to dial: %v", err)
+	}
+
+	return response, nil
+}
+
+func (us UsersService) GetMarginAttributes(accountID string) (*pb.GetMarginAttributesResponse, error) {
+	ctx, cancel := CreateRequestContext(us.config)
+	defer cancel()
+
+	response, err := us.client.GetMarginAttributes(ctx, &pb.GetMarginAttributesRequest{AccountId: accountID})
+
+	if err != nil {
+		grpclog.Fatalf("fail to dial: %v", err)
+	}
+
+	return response, nil
+}
+
+func (us UsersService) GetUserTariff() (*pb.GetUserTariffResponse, error) {
+	ctx, cancel := CreateRequestContext(us.config)
+	defer cancel()
+
+	res, err := us.client.GetUserTariff(ctx, &pb.GetUserTariffRequest{})
+	if err != nil {
+		return nil, err
+	}
+
+	return res, nil
+}
+
+func (us UsersService) GetInfo() (*pb.GetInfoResponse, error) {
+	ctx, cancel := CreateRequestContext(us.config)
+	defer cancel()
+
+	res, err := us.client.GetInfo(ctx, &pb.GetInfoRequest{})
+	if err != nil {
+		return nil, err
+	}
+
+	return res, nil
+}
