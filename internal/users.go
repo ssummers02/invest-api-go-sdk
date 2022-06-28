@@ -2,10 +2,8 @@ package internal
 
 import (
 	pb "invest-api-go-sdk/internal/investapi"
-	"log"
 
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/grpclog"
 )
 
 type UsersServiceClient interface {
@@ -40,7 +38,7 @@ func (us UsersService) GetAccounts() (*pb.GetAccountsResponse, error) {
 	response, err := us.client.GetAccounts(ctx, &pb.GetAccountsRequest{})
 
 	if err != nil {
-		log.Fatalf("fail to dial: %v", err)
+		return nil, err
 	}
 
 	return response, nil
@@ -53,7 +51,7 @@ func (us UsersService) GetMarginAttributes(accountID string) (*pb.GetMarginAttri
 	response, err := us.client.GetMarginAttributes(ctx, &pb.GetMarginAttributesRequest{AccountId: accountID})
 
 	if err != nil {
-		grpclog.Fatalf("fail to dial: %v", err)
+		return nil, err
 	}
 
 	return response, nil

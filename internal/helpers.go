@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	ApiURL = "invest-public-api.tinkoff.ru:443"
+	APIURL = "invest-public-api.tinkoff.ru:443"
 
 	DefaultRequestTimeout = 30 * time.Second
 )
@@ -25,9 +25,9 @@ type TradeBotConfig struct {
 }
 
 func CreateClientConn() (*grpc.ClientConn, error) {
-	tlsConfig := tls.Config{}
+	tlsConfig := tls.Config{MinVersion: tls.VersionTLS12}
 
-	return grpc.Dial(ApiURL, grpc.WithTransportCredentials(credentials.NewTLS(&tlsConfig)))
+	return grpc.Dial(APIURL, grpc.WithTransportCredentials(credentials.NewTLS(&tlsConfig)))
 }
 
 // CreateRequestContext returns context for API calls with timeout and auth headers attached.
@@ -37,7 +37,7 @@ func CreateRequestContext(cfg TradeBotConfig) (context.Context, context.CancelFu
 	authHeader := fmt.Sprintf("Bearer %s", cfg.Token)
 	ctx = grpcMetadata.AppendToOutgoingContext(ctx, "authorization", authHeader)
 	ctx = grpcMetadata.AppendToOutgoingContext(ctx, "x-tracking-id", uuid.New().String())
-	//ctx = grpcMetadata.AppendToOutgoingContext(ctx, "x-app-name", AppName)
+	// ctx = grpcMetadata.AppendToOutgoingContext(ctx, "x-app-name", AppName)
 
 	return ctx, cancel
 }
