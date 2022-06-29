@@ -10,6 +10,7 @@ type ServicePool struct {
 	internal.InstrumentsInterface
 	internal.OrderStreamInterface
 	internal.OrdersInterface
+	internal.OperationsInterface
 }
 
 func NewServicePool() (*ServicePool, error) {
@@ -34,5 +35,6 @@ func NewServicePool() (*ServicePool, error) {
 		InstrumentsInterface: internal.NewInstrumentsService(conn, cfg),
 		OrderStreamInterface: ordersStreamService,
 		OrdersInterface:      internal.NewOrdersService(conn, cfg),
+		OperationsInterface:  internal.NewOperationsService(conn, cfg),
 	}, nil
 }
