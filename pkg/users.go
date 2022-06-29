@@ -1,7 +1,7 @@
 package pkg
 
 import (
-	pb "invest-api-go-sdk/pkg/investapi"
+	pb "github.com/ssummers02/invest-api-go-sdk/pkg/investapi"
 
 	"google.golang.org/grpc"
 )

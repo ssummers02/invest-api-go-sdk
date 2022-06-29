@@ -1,7 +1,7 @@
 package main
 
 import (
-	"invest-api-go-sdk/pkg"
+	"github.com/ssummers02/invest-api-go-sdk/pkg"
 	"log"
 )
 

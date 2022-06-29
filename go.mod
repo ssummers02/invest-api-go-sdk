@@ -1,4 +1,4 @@
-module invest-api-go-sdk
+module github.com/ssummers02/invest-api-go-sdk
 
 go 1.17
 
