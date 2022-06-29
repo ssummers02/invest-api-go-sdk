@@ -15,6 +15,7 @@ import (
 const (
 	APIURL                = "invest-public-api.tinkoff.ru:443"
 	DefaultRequestTimeout = 30 * time.Second
+	AppName               = "ssummers02/invest-api-go-sdk"
 )
 
 type Config struct {
@@ -35,7 +36,7 @@ func CreateRequestContext(cfg Config) (context.Context, context.CancelFunc) {
 	authHeader := fmt.Sprintf("Bearer %s", cfg.Token)
 	ctx = grpcMetadata.AppendToOutgoingContext(ctx, "authorization", authHeader)
 	ctx = grpcMetadata.AppendToOutgoingContext(ctx, "x-tracking-id", uuid.New().String())
-	// ctx = grpcMetadata.AppendToOutgoingContext(ctx, "x-app-name", AppName)
+	ctx = grpcMetadata.AppendToOutgoingContext(ctx, "x-app-name", AppName)
 
 	return ctx, cancel
 }
@@ -47,7 +48,7 @@ func CreateStreamContext(cfg Config) context.Context {
 	authHeader := fmt.Sprintf("Bearer %s", cfg.Token)
 	ctx = grpcMetadata.AppendToOutgoingContext(ctx, "authorization", authHeader)
 	ctx = grpcMetadata.AppendToOutgoingContext(ctx, "x-tracking-id", uuid.New().String())
-	// ctx = grpcMetadata.AppendToOutgoingContext(ctx, "x-app-name", AppName)
+	ctx = grpcMetadata.AppendToOutgoingContext(ctx, "x-app-name", AppName)
 
 	return ctx
 }
