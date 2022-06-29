@@ -17,6 +17,7 @@ issues:
 linters:
   enable-all: true
   disable:
+    - interfacer
     - exhaustivestruct
     - gci
     - wrapcheck

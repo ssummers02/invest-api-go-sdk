@@ -33,10 +33,12 @@ func NewServicePool() (*ServicePool, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	marketDataStreamService, err := internal.NewMarketDataStream(conn, cfg)
 	if err != nil {
 		return nil, err
 	}
+
 	return &ServicePool{
 		UsersInterface:            internal.NewUsersService(conn, cfg),
 		InstrumentsInterface:      internal.NewInstrumentsService(conn, cfg),

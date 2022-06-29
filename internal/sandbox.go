@@ -39,6 +39,7 @@ type SandboxService struct {
 
 func NewSandboxService(conn *grpc.ClientConn, config TradeBotConfig) *SandboxService {
 	client := pb.NewSandboxServiceClient(conn)
+
 	return &SandboxService{client: client, config: config}
 }
 

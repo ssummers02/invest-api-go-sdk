@@ -25,6 +25,7 @@ type OperationsService struct {
 
 func NewOperationsService(conn *grpc.ClientConn, config TradeBotConfig) *OperationsService {
 	client := pb.NewOperationsServiceClient(conn)
+
 	return &OperationsService{
 		client: client,
 		config: config,

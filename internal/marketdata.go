@@ -27,6 +27,7 @@ type MarketDataService struct {
 
 func NewMarketDataService(conn *grpc.ClientConn, config TradeBotConfig) *MarketDataService {
 	client := pb.NewMarketDataServiceClient(conn)
+
 	return &MarketDataService{
 		client: client,
 		config: config,

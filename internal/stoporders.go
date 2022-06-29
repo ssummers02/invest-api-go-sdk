@@ -22,8 +22,8 @@ type StopOrdersService struct {
 }
 
 func NewStopOrdersService(conn *grpc.ClientConn, config TradeBotConfig) *StopOrdersService {
-
 	client := pb.NewStopOrdersServiceClient(conn)
+
 	return &StopOrdersService{client: client, config: config}
 }
 
