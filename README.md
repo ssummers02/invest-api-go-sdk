@@ -58,8 +58,8 @@ func listenTradeStream(ctx context.Context, services *pkg.ServicePool) {
 
 func main() {
 	cfg := pkg.Config{
-		Token:     "t.Qh5RbKdX8aVcIeP1tFzhtTJCRdZhnkbXdIS8TLGrt0WNJXAFjaGjrFjRse0yp90Ic-BTnAH71nY5JfXChICsEg",
-		AccountID: []string{"invest-api-go-sdk-test-account"},
+		Token:     "token",
+		AccountID: []string{"account-id"},
 	}
 
 	services, err := pkg.NewServicePool(cfg)
