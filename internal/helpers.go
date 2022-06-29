@@ -19,9 +19,9 @@ const (
 )
 
 type TradeBotConfig struct {
-	IsSandbox bool   `default:"true" split_words:"true"`
-	Token     string `required:"true"`
-	AccountID string `split_words:"true"` // required in non-sandbox mode
+	IsSandbox bool     `default:"true" split_words:"true"`
+	Token     string   `required:"true"`
+	AccountID []string `split_words:"true"` // required in non-sandbox mode
 }
 
 func CreateClientConn() (*grpc.ClientConn, error) {
@@ -40,4 +40,16 @@ func CreateRequestContext(cfg TradeBotConfig) (context.Context, context.CancelFu
 	// ctx = grpcMetadata.AppendToOutgoingContext(ctx, "x-app-name", AppName)
 
 	return ctx, cancel
+}
+
+// CreateStreamContext returns context for streams with auth headers attached.
+func CreateStreamContext(cfg TradeBotConfig) context.Context {
+	ctx := context.TODO()
+
+	authHeader := fmt.Sprintf("Bearer %s", cfg.Token)
+	ctx = grpcMetadata.AppendToOutgoingContext(ctx, "authorization", authHeader)
+	ctx = grpcMetadata.AppendToOutgoingContext(ctx, "x-tracking-id", uuid.New().String())
+	// ctx = grpcMetadata.AppendToOutgoingContext(ctx, "x-app-name", AppName)
+
+	return ctx
 }
