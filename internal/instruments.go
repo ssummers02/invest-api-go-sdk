@@ -7,6 +7,49 @@ import (
 	"google.golang.org/grpc"
 )
 
+type InstrumentsInterface interface {
+	// TradingSchedules The method of obtaining the trading schedule of trading platforms.
+	TradingSchedules(exchange string, from, to *timestamp.Timestamp) ([]*pb.TradingSchedule, error)
+	// BondBy The method of obtaining a bond by its identifier.
+	BondBy(filters *pb.InstrumentRequest) (*pb.Bond, error)
+	// Bonds Method of obtaining a list of bonds.
+	Bonds(status pb.InstrumentStatus) ([]*pb.Bond, error)
+	// GetBondCoupons Method of obtaining a coupon payment schedule for a bond.
+	GetBondCoupons(figi string, from, to *timestamp.Timestamp) ([]*pb.Coupon, error)
+	// CurrencyBy The method of obtaining a currency by its identifier.
+	CurrencyBy(filters *pb.InstrumentRequest) (*pb.Currency, error)
+	// Currencies Method for getting a list of currencies.
+	Currencies(status pb.InstrumentStatus) ([]*pb.Currency, error)
+	// EtfBy The method of obtaining an investment fund by its identifier.
+	EtfBy(filters *pb.InstrumentRequest) (*pb.Etf, error)
+	// Etfs Method of obtaining a list of investment funds.
+	Etfs(status pb.InstrumentStatus) ([]*pb.Etf, error)
+	// FutureBy The method of obtaining futures by its identifier.
+	FutureBy(filters *pb.InstrumentRequest) (*pb.Future, error)
+	// Futures Method for getting a list of futures.
+	Futures(status pb.InstrumentStatus) ([]*pb.Future, error)
+	// ShareBy The method of obtaining a stock by its identifier.
+	ShareBy(filters *pb.InstrumentRequest) (*pb.Share, error)
+	// Shares Method of getting a list of shares.
+	Shares(status pb.InstrumentStatus) ([]*pb.Share, error)
+	// GetAccruedInterests The method of obtaining the accumulated coupon income on the bond.
+	GetAccruedInterests(figi string, from, to *timestamp.Timestamp) ([]*pb.AccruedInterest, error)
+	// GetFuturesMargin The method of obtaining the amount of the guarantee for futures.
+	GetFuturesMargin(figi string) (*pb.GetFuturesMarginResponse, error)
+	// GetInstrumentBy The method of obtaining basic information about the tool.
+	GetInstrumentBy(filters *pb.InstrumentRequest) (*pb.Instrument, error)
+	// GetDividends A method for obtaining dividend payment events for an instrument.
+	GetDividends(figi string, from, to *timestamp.Timestamp) ([]*pb.Dividend, error)
+	// GetAssetBy The method of obtaining an asset by its identifier.
+	GetAssetBy(assetID string) (*pb.AssetFull, error)
+	// GetAssets Method for getting a list of assets.
+	GetAssets() ([]*pb.Asset, error)
+	// GetFavorites The method of getting the favourite instruments.
+	GetFavorites() ([]*pb.FavoriteInstrument, error)
+	// EditFavorites The method of editing the selected instruments.
+	EditFavorites(newFavourites *pb.EditFavoritesRequest) ([]*pb.FavoriteInstrument, error)
+}
+
 type InstrumentsService struct {
 	client pb.InstrumentsServiceClient
 	config TradeBotConfig
@@ -18,7 +61,7 @@ func NewInstrumentsService(conn *grpc.ClientConn, cfg TradeBotConfig) *Instrumen
 	return &InstrumentsService{client: client, config: cfg}
 }
 
-func (is InstrumentsService) TradingSchedules(exchange string, from, to *timestamp.Timestamp) ([]*pb.TradingSchedule, error) {
+func (is *InstrumentsService) TradingSchedules(exchange string, from, to *timestamp.Timestamp) ([]*pb.TradingSchedule, error) {
 	ctx, cancel := CreateRequestContext(is.config)
 	defer cancel()
 
@@ -34,7 +77,7 @@ func (is InstrumentsService) TradingSchedules(exchange string, from, to *timesta
 	return res.Exchanges, nil
 }
 
-func (is InstrumentsService) BondBy(filters *pb.InstrumentRequest) (*pb.Bond, error) {
+func (is *InstrumentsService) BondBy(filters *pb.InstrumentRequest) (*pb.Bond, error) {
 	ctx, cancel := CreateRequestContext(is.config)
 	defer cancel()
 
@@ -46,7 +89,7 @@ func (is InstrumentsService) BondBy(filters *pb.InstrumentRequest) (*pb.Bond, er
 	return res.Instrument, nil
 }
 
-func (is InstrumentsService) Bonds(status pb.InstrumentStatus) ([]*pb.Bond, error) {
+func (is *InstrumentsService) Bonds(status pb.InstrumentStatus) ([]*pb.Bond, error) {
 	ctx, cancel := CreateRequestContext(is.config)
 	defer cancel()
 
@@ -60,7 +103,7 @@ func (is InstrumentsService) Bonds(status pb.InstrumentStatus) ([]*pb.Bond, erro
 	return res.Instruments, nil
 }
 
-func (is InstrumentsService) GetBondCoupons(figi string, from, to *timestamp.Timestamp) ([]*pb.Coupon, error) {
+func (is *InstrumentsService) GetBondCoupons(figi string, from, to *timestamp.Timestamp) ([]*pb.Coupon, error) {
 	ctx, cancel := CreateRequestContext(is.config)
 	defer cancel()
 
@@ -76,7 +119,7 @@ func (is InstrumentsService) GetBondCoupons(figi string, from, to *timestamp.Tim
 	return res.Events, nil
 }
 
-func (is InstrumentsService) CurrencyBy(filters *pb.InstrumentRequest) (*pb.Currency, error) {
+func (is *InstrumentsService) CurrencyBy(filters *pb.InstrumentRequest) (*pb.Currency, error) {
 	ctx, cancel := CreateRequestContext(is.config)
 	defer cancel()
 
@@ -88,7 +131,7 @@ func (is InstrumentsService) CurrencyBy(filters *pb.InstrumentRequest) (*pb.Curr
 	return res.Instrument, nil
 }
 
-func (is InstrumentsService) Currencies(status pb.InstrumentStatus) ([]*pb.Currency, error) {
+func (is *InstrumentsService) Currencies(status pb.InstrumentStatus) ([]*pb.Currency, error) {
 	ctx, cancel := CreateRequestContext(is.config)
 	defer cancel()
 
@@ -102,7 +145,7 @@ func (is InstrumentsService) Currencies(status pb.InstrumentStatus) ([]*pb.Curre
 	return res.Instruments, nil
 }
 
-func (is InstrumentsService) EtfBy(filters *pb.InstrumentRequest) (*pb.Etf, error) {
+func (is *InstrumentsService) EtfBy(filters *pb.InstrumentRequest) (*pb.Etf, error) {
 	ctx, cancel := CreateRequestContext(is.config)
 	defer cancel()
 
@@ -114,7 +157,7 @@ func (is InstrumentsService) EtfBy(filters *pb.InstrumentRequest) (*pb.Etf, erro
 	return res.Instrument, nil
 }
 
-func (is InstrumentsService) Etfs(status pb.InstrumentStatus) ([]*pb.Etf, error) {
+func (is *InstrumentsService) Etfs(status pb.InstrumentStatus) ([]*pb.Etf, error) {
 	ctx, cancel := CreateRequestContext(is.config)
 	defer cancel()
 
@@ -128,7 +171,7 @@ func (is InstrumentsService) Etfs(status pb.InstrumentStatus) ([]*pb.Etf, error)
 	return res.Instruments, nil
 }
 
-func (is InstrumentsService) FutureBy(filters *pb.InstrumentRequest) (*pb.Future, error) {
+func (is *InstrumentsService) FutureBy(filters *pb.InstrumentRequest) (*pb.Future, error) {
 	ctx, cancel := CreateRequestContext(is.config)
 	defer cancel()
 
@@ -140,7 +183,7 @@ func (is InstrumentsService) FutureBy(filters *pb.InstrumentRequest) (*pb.Future
 	return res.Instrument, nil
 }
 
-func (is InstrumentsService) Futures(status pb.InstrumentStatus) ([]*pb.Future, error) {
+func (is *InstrumentsService) Futures(status pb.InstrumentStatus) ([]*pb.Future, error) {
 	ctx, cancel := CreateRequestContext(is.config)
 	defer cancel()
 
@@ -154,7 +197,7 @@ func (is InstrumentsService) Futures(status pb.InstrumentStatus) ([]*pb.Future, 
 	return res.Instruments, nil
 }
 
-func (is InstrumentsService) ShareBy(filters *pb.InstrumentRequest) (*pb.Share, error) {
+func (is *InstrumentsService) ShareBy(filters *pb.InstrumentRequest) (*pb.Share, error) {
 	ctx, cancel := CreateRequestContext(is.config)
 	defer cancel()
 
@@ -166,7 +209,7 @@ func (is InstrumentsService) ShareBy(filters *pb.InstrumentRequest) (*pb.Share, 
 	return res.Instrument, nil
 }
 
-func (is InstrumentsService) Shares(status pb.InstrumentStatus) ([]*pb.Share, error) {
+func (is *InstrumentsService) Shares(status pb.InstrumentStatus) ([]*pb.Share, error) {
 	ctx, cancel := CreateRequestContext(is.config)
 	defer cancel()
 
@@ -180,7 +223,7 @@ func (is InstrumentsService) Shares(status pb.InstrumentStatus) ([]*pb.Share, er
 	return res.Instruments, nil
 }
 
-func (is InstrumentsService) GetAccruedInterests(figi string, from, to *timestamp.Timestamp) ([]*pb.AccruedInterest, error) {
+func (is *InstrumentsService) GetAccruedInterests(figi string, from, to *timestamp.Timestamp) ([]*pb.AccruedInterest, error) {
 	ctx, cancel := CreateRequestContext(is.config)
 	defer cancel()
 
@@ -196,7 +239,7 @@ func (is InstrumentsService) GetAccruedInterests(figi string, from, to *timestam
 	return res.AccruedInterests, nil
 }
 
-func (is InstrumentsService) GetFuturesMargin(figi string) (*pb.GetFuturesMarginResponse, error) {
+func (is *InstrumentsService) GetFuturesMargin(figi string) (*pb.GetFuturesMarginResponse, error) {
 	ctx, cancel := CreateRequestContext(is.config)
 	defer cancel()
 
@@ -210,7 +253,7 @@ func (is InstrumentsService) GetFuturesMargin(figi string) (*pb.GetFuturesMargin
 	return res, nil
 }
 
-func (is InstrumentsService) GetInstrumentBy(filters *pb.InstrumentRequest) (*pb.Instrument, error) {
+func (is *InstrumentsService) GetInstrumentBy(filters *pb.InstrumentRequest) (*pb.Instrument, error) {
 	ctx, cancel := CreateRequestContext(is.config)
 	defer cancel()
 
@@ -222,7 +265,7 @@ func (is InstrumentsService) GetInstrumentBy(filters *pb.InstrumentRequest) (*pb
 	return res.Instrument, nil
 }
 
-func (is InstrumentsService) GetDividends(figi string, from, to *timestamp.Timestamp) ([]*pb.Dividend, error) {
+func (is *InstrumentsService) GetDividends(figi string, from, to *timestamp.Timestamp) ([]*pb.Dividend, error) {
 	ctx, cancel := CreateRequestContext(is.config)
 	defer cancel()
 
@@ -238,7 +281,7 @@ func (is InstrumentsService) GetDividends(figi string, from, to *timestamp.Times
 	return res.Dividends, nil
 }
 
-func (is InstrumentsService) GetAssetBy(assetID string) (*pb.AssetFull, error) {
+func (is *InstrumentsService) GetAssetBy(assetID string) (*pb.AssetFull, error) {
 	ctx, cancel := CreateRequestContext(is.config)
 	defer cancel()
 
@@ -252,7 +295,7 @@ func (is InstrumentsService) GetAssetBy(assetID string) (*pb.AssetFull, error) {
 	return res.Asset, nil
 }
 
-func (is InstrumentsService) GetAssets() ([]*pb.Asset, error) {
+func (is *InstrumentsService) GetAssets() ([]*pb.Asset, error) {
 	ctx, cancel := CreateRequestContext(is.config)
 	defer cancel()
 
@@ -264,7 +307,7 @@ func (is InstrumentsService) GetAssets() ([]*pb.Asset, error) {
 	return res.Assets, nil
 }
 
-func (is InstrumentsService) GetFavorites() ([]*pb.FavoriteInstrument, error) {
+func (is *InstrumentsService) GetFavorites() ([]*pb.FavoriteInstrument, error) {
 	ctx, cancel := CreateRequestContext(is.config)
 	defer cancel()
 
@@ -276,7 +319,7 @@ func (is InstrumentsService) GetFavorites() ([]*pb.FavoriteInstrument, error) {
 	return res.FavoriteInstruments, nil
 }
 
-func (is InstrumentsService) EditFavorites(newFavourites *pb.EditFavoritesRequest) ([]*pb.FavoriteInstrument, error) {
+func (is *InstrumentsService) EditFavorites(newFavourites *pb.EditFavoritesRequest) ([]*pb.FavoriteInstrument, error) {
 	ctx, cancel := CreateRequestContext(is.config)
 	defer cancel()
 

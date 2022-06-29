@@ -6,8 +6,8 @@ import (
 
 // ServicePool is a ready-to-use scope for all available non-stream services.
 type ServicePool struct {
-	internal.UsersService
-	internal.InstrumentsService
+	internal.UsersInterface
+	internal.InstrumentsInterface
 }
 
 func NewServicePool() (*ServicePool, error) {
@@ -23,7 +23,7 @@ func NewServicePool() (*ServicePool, error) {
 	}
 
 	return &ServicePool{
-		UsersService:       *internal.NewUsersService(conn, cfg),
-		InstrumentsService: *internal.NewInstrumentsService(conn, cfg),
+		UsersInterface:       internal.NewUsersService(conn, cfg),
+		InstrumentsInterface: internal.NewInstrumentsService(conn, cfg),
 	}, nil
 }

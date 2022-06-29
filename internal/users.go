@@ -6,9 +6,9 @@ import (
 	"google.golang.org/grpc"
 )
 
-type UsersServiceClient interface {
+type UsersInterface interface {
 	// GetAccounts The method of receiving user accounts.
-	GetAccounts() ([]*pb.Account, error)
+	GetAccounts() (*pb.GetAccountsResponse, error)
 	// GetMarginAttributes Calculation of margin indicators on the account.
 	GetMarginAttributes(accountID string) (*pb.GetMarginAttributesResponse, error)
 	// GetUserTariff Request for the user's tariff.
@@ -31,7 +31,7 @@ func NewUsersService(conn *grpc.ClientConn, config TradeBotConfig) *UsersService
 	}
 }
 
-func (us UsersService) GetAccounts() (*pb.GetAccountsResponse, error) {
+func (us *UsersService) GetAccounts() (*pb.GetAccountsResponse, error) {
 	ctx, cancel := CreateRequestContext(us.config)
 	defer cancel()
 
@@ -44,7 +44,7 @@ func (us UsersService) GetAccounts() (*pb.GetAccountsResponse, error) {
 	return response, nil
 }
 
-func (us UsersService) GetMarginAttributes(accountID string) (*pb.GetMarginAttributesResponse, error) {
+func (us *UsersService) GetMarginAttributes(accountID string) (*pb.GetMarginAttributesResponse, error) {
 	ctx, cancel := CreateRequestContext(us.config)
 	defer cancel()
 
@@ -57,7 +57,7 @@ func (us UsersService) GetMarginAttributes(accountID string) (*pb.GetMarginAttri
 	return response, nil
 }
 
-func (us UsersService) GetUserTariff() (*pb.GetUserTariffResponse, error) {
+func (us *UsersService) GetUserTariff() (*pb.GetUserTariffResponse, error) {
 	ctx, cancel := CreateRequestContext(us.config)
 	defer cancel()
 
@@ -69,7 +69,7 @@ func (us UsersService) GetUserTariff() (*pb.GetUserTariffResponse, error) {
 	return res, nil
 }
 
-func (us UsersService) GetInfo() (*pb.GetInfoResponse, error) {
+func (us *UsersService) GetInfo() (*pb.GetInfoResponse, error) {
 	ctx, cancel := CreateRequestContext(us.config)
 	defer cancel()
 
