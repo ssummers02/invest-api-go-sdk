@@ -1,7 +1,7 @@
-package internal
+package pkg
 
 import (
-	pb "invest-api-go-sdk/internal/investapi"
+	pb "invest-api-go-sdk/pkg/investapi"
 
 	"google.golang.org/grpc"
 )
@@ -19,10 +19,10 @@ type UsersInterface interface {
 
 type UsersService struct {
 	client pb.UsersServiceClient
-	config TradeBotConfig
+	config Config
 }
 
-func NewUsersService(conn *grpc.ClientConn, config TradeBotConfig) *UsersService {
+func NewUsersService(conn *grpc.ClientConn, config Config) *UsersService {
 	client := pb.NewUsersServiceClient(conn)
 
 	return &UsersService{

@@ -1,7 +1,7 @@
-package internal
+package pkg
 
 import (
-	pb "invest-api-go-sdk/internal/investapi"
+	pb "invest-api-go-sdk/pkg/investapi"
 
 	"github.com/golang/protobuf/ptypes/timestamp"
 	"google.golang.org/grpc"
@@ -34,10 +34,10 @@ type SandboxInterface interface {
 
 type SandboxService struct {
 	client pb.SandboxServiceClient
-	config TradeBotConfig
+	config Config
 }
 
-func NewSandboxService(conn *grpc.ClientConn, config TradeBotConfig) *SandboxService {
+func NewSandboxService(conn *grpc.ClientConn, config Config) *SandboxService {
 	client := pb.NewSandboxServiceClient(conn)
 
 	return &SandboxService{client: client, config: config}

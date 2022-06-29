@@ -1,7 +1,7 @@
-package internal
+package pkg
 
 import (
-	pb "invest-api-go-sdk/internal/investapi"
+	pb "invest-api-go-sdk/pkg/investapi"
 
 	"github.com/golang/protobuf/ptypes/timestamp"
 	"google.golang.org/grpc"
@@ -52,10 +52,10 @@ type InstrumentsInterface interface {
 
 type InstrumentsService struct {
 	client pb.InstrumentsServiceClient
-	config TradeBotConfig
+	config Config
 }
 
-func NewInstrumentsService(conn *grpc.ClientConn, cfg TradeBotConfig) *InstrumentsService {
+func NewInstrumentsService(conn *grpc.ClientConn, cfg Config) *InstrumentsService {
 	client := pb.NewInstrumentsServiceClient(conn)
 
 	return &InstrumentsService{client: client, config: cfg}

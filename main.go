@@ -1,17 +1,25 @@
 package main
 
-import "log"
+import (
+	"invest-api-go-sdk/pkg"
+	"log"
+)
 
 func main() {
-	services, err := NewServicePool()
+	cfg := pkg.Config{
+		Token:     "t.Qh5RbKdX8aVcIeP1tFzhtTJCRdZhnkbXdIS8TLGrt0WNJXAFjaGjrFjRse0yp90Ic-BTnAH71nY5JfXChICsEg",
+		AccountID: []string{"invest-api-go-sdk-test-account"},
+	}
+
+	services, err := pkg.NewServicePool(cfg)
 	if err != nil {
 		log.Println(err)
 	}
 
-	accounts, err := services.GetAccounts()
+	accounts, err := services.GetSandboxAccounts()
 	if err != nil {
-		return
+		log.Println(err)
 	}
 
-	log.Println(accounts.GetAccounts())
+	log.Println(accounts)
 }

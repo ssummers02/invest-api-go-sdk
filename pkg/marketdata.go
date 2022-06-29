@@ -1,7 +1,7 @@
-package internal
+package pkg
 
 import (
-	pb "invest-api-go-sdk/internal/investapi"
+	pb "invest-api-go-sdk/pkg/investapi"
 
 	"github.com/golang/protobuf/ptypes/timestamp"
 	"google.golang.org/grpc"
@@ -22,10 +22,10 @@ type MarketDataInterface interface {
 
 type MarketDataService struct {
 	client pb.MarketDataServiceClient
-	config TradeBotConfig
+	config Config
 }
 
-func NewMarketDataService(conn *grpc.ClientConn, config TradeBotConfig) *MarketDataService {
+func NewMarketDataService(conn *grpc.ClientConn, config Config) *MarketDataService {
 	client := pb.NewMarketDataServiceClient(conn)
 
 	return &MarketDataService{

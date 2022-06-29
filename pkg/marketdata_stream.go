@@ -1,7 +1,7 @@
-package internal
+package pkg
 
 import (
-	pb "invest-api-go-sdk/internal/investapi"
+	pb "invest-api-go-sdk/pkg/investapi"
 
 	"google.golang.org/grpc"
 )
@@ -18,7 +18,7 @@ type MarketDataStream struct {
 	stream pb.MarketDataStreamService_MarketDataStreamClient
 }
 
-func NewMarketDataStream(conn *grpc.ClientConn, config TradeBotConfig) (*MarketDataStream, error) {
+func NewMarketDataStream(conn *grpc.ClientConn, config Config) (*MarketDataStream, error) {
 	client := pb.NewMarketDataStreamServiceClient(conn)
 	ctx := CreateStreamContext(config)
 

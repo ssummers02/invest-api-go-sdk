@@ -1,7 +1,7 @@
-package internal
+package pkg
 
 import (
-	pb "invest-api-go-sdk/internal/investapi"
+	pb "invest-api-go-sdk/pkg/investapi"
 
 	"github.com/golang/protobuf/ptypes/timestamp"
 	"google.golang.org/grpc"
@@ -18,10 +18,10 @@ type StopOrdersInterface interface {
 
 type StopOrdersService struct {
 	client pb.StopOrdersServiceClient
-	config TradeBotConfig
+	config Config
 }
 
-func NewStopOrdersService(conn *grpc.ClientConn, config TradeBotConfig) *StopOrdersService {
+func NewStopOrdersService(conn *grpc.ClientConn, config Config) *StopOrdersService {
 	client := pb.NewStopOrdersServiceClient(conn)
 
 	return &StopOrdersService{client: client, config: config}

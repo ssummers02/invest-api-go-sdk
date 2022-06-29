@@ -1,7 +1,7 @@
-package internal
+package pkg
 
 import (
-	pb "invest-api-go-sdk/internal/investapi"
+	pb "invest-api-go-sdk/pkg/investapi"
 
 	"github.com/golang/protobuf/ptypes/timestamp"
 	"google.golang.org/grpc"
@@ -20,10 +20,10 @@ type OrdersInterface interface {
 
 type OrdersService struct {
 	client pb.OrdersServiceClient
-	config TradeBotConfig
+	config Config
 }
 
-func NewOrdersService(conn *grpc.ClientConn, config TradeBotConfig) *OrdersService {
+func NewOrdersService(conn *grpc.ClientConn, config Config) *OrdersService {
 	client := pb.NewOrdersServiceClient(conn)
 
 	return &OrdersService{

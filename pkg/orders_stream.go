@@ -1,7 +1,7 @@
-package internal
+package pkg
 
 import (
-	pb "invest-api-go-sdk/internal/investapi"
+	pb "invest-api-go-sdk/pkg/investapi"
 
 	"google.golang.org/grpc"
 )
@@ -16,7 +16,7 @@ type OrdersStreamService struct {
 	stream pb.OrdersStreamService_TradesStreamClient
 }
 
-func NewOrdersStreamService(conn *grpc.ClientConn, config TradeBotConfig) (*OrdersStreamService, error) {
+func NewOrdersStreamService(conn *grpc.ClientConn, config Config) (*OrdersStreamService, error) {
 	client := pb.NewOrdersStreamServiceClient(conn)
 	ctx := CreateStreamContext(config)
 

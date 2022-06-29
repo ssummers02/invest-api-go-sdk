@@ -1,4 +1,4 @@
-package internal
+package pkg
 
 import (
 	"context"
@@ -13,13 +13,11 @@ import (
 )
 
 const (
-	APIURL = "invest-public-api.tinkoff.ru:443"
-
+	APIURL                = "invest-public-api.tinkoff.ru:443"
 	DefaultRequestTimeout = 30 * time.Second
 )
 
-type TradeBotConfig struct {
-	IsSandbox bool     `default:"true" split_words:"true"`
+type Config struct {
 	Token     string   `required:"true"`
 	AccountID []string `split_words:"true"` // required in non-sandbox mode
 }
@@ -31,7 +29,7 @@ func CreateClientConn() (*grpc.ClientConn, error) {
 }
 
 // CreateRequestContext returns context for API calls with timeout and auth headers attached.
-func CreateRequestContext(cfg TradeBotConfig) (context.Context, context.CancelFunc) {
+func CreateRequestContext(cfg Config) (context.Context, context.CancelFunc) {
 	ctx, cancel := context.WithTimeout(context.Background(), DefaultRequestTimeout)
 
 	authHeader := fmt.Sprintf("Bearer %s", cfg.Token)
@@ -43,7 +41,7 @@ func CreateRequestContext(cfg TradeBotConfig) (context.Context, context.CancelFu
 }
 
 // CreateStreamContext returns context for streams with auth headers attached.
-func CreateStreamContext(cfg TradeBotConfig) context.Context {
+func CreateStreamContext(cfg Config) context.Context {
 	ctx := context.TODO()
 
 	authHeader := fmt.Sprintf("Bearer %s", cfg.Token)
