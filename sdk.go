@@ -13,6 +13,8 @@ type ServicePool struct {
 	internal.OperationsInterface
 	internal.MarketDataInterface
 	internal.MarketDataStreamInterface
+	internal.StopOrdersInterface
+	internal.SandboxInterface
 }
 
 func NewServicePool() (*ServicePool, error) {
@@ -43,5 +45,7 @@ func NewServicePool() (*ServicePool, error) {
 		OperationsInterface:       internal.NewOperationsService(conn, cfg),
 		MarketDataInterface:       internal.NewMarketDataService(conn, cfg),
 		MarketDataStreamInterface: marketDataStreamService,
+		StopOrdersInterface:       internal.NewStopOrdersService(conn, cfg),
+		SandboxInterface:          internal.NewSandboxService(conn, cfg),
 	}, nil
 }
