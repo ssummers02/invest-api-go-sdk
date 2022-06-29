@@ -31,7 +31,7 @@ func NewOperationsService(conn *grpc.ClientConn, config TradeBotConfig) *Operati
 	}
 }
 
-func (os OperationsService) GetOperations(accountID string, from, to *timestamp.Timestamp, state pb.OperationState, figi string) ([]*pb.Operation, error) {
+func (os *OperationsService) GetOperations(accountID string, from, to *timestamp.Timestamp, state pb.OperationState, figi string) ([]*pb.Operation, error) {
 	ctx, cancel := CreateRequestContext(os.config)
 	defer cancel()
 
@@ -49,7 +49,7 @@ func (os OperationsService) GetOperations(accountID string, from, to *timestamp.
 	return res.Operations, nil
 }
 
-func (os OperationsService) GetPortfolio(accountID string) (*pb.PortfolioResponse, error) {
+func (os *OperationsService) GetPortfolio(accountID string) (*pb.PortfolioResponse, error) {
 	ctx, cancel := CreateRequestContext(os.config)
 	defer cancel()
 
@@ -63,7 +63,7 @@ func (os OperationsService) GetPortfolio(accountID string) (*pb.PortfolioRespons
 	return res, nil
 }
 
-func (os OperationsService) GetPositions(accountID string) (*pb.PositionsResponse, error) {
+func (os *OperationsService) GetPositions(accountID string) (*pb.PositionsResponse, error) {
 	ctx, cancel := CreateRequestContext(os.config)
 	defer cancel()
 
@@ -77,7 +77,7 @@ func (os OperationsService) GetPositions(accountID string) (*pb.PositionsRespons
 	return res, nil
 }
 
-func (os OperationsService) GetWithdrawLimits(accountID string) (*pb.WithdrawLimitsResponse, error) {
+func (os *OperationsService) GetWithdrawLimits(accountID string) (*pb.WithdrawLimitsResponse, error) {
 	ctx, cancel := CreateRequestContext(os.config)
 	defer cancel()
 
