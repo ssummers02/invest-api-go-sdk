@@ -1,0 +1,87 @@
+run:
+  tests: true
+# output configuration options
+output:
+  # colored-line-number|line-number|json|tab|checkstyle|code-climate|junit-xml|github-actions
+  # default is "colored-line-number"
+  format: tab
+  # add a prefix to the output file references; default is no prefix
+  #  path-prefix: "app/community"
+  # sorts results by: filepath, line and column
+  sort-results: true
+issues:
+  # Maximum issues count per one linter. Set to 0 to disable. Default is 50.
+  max-issues-per-linter: 75
+  # Maximum count of issues with the same text. Set to 0 to disable. Default is 3.
+  max-same-issues: 5
+linters:
+  enable-all: true
+  disable:
+    - interfacer
+    - exhaustivestruct
+    - gci
+    - wrapcheck
+    - varnamelen
+    - ifshort
+    - dupl
+    - maligned
+    - prealloc
+    - testpackage
+    - ireturn
+    - nilnil
+    - gochecknoglobals
+    - typecheck
+    - lll
+    - goprintffuncname
+    - nakedret
+    - gofumpt
+linters-settings:
+  exhaustive:
+    default-signifies-exhaustive: true
+  gosimple:
+    go: "1.17"
+  staticcheck:
+    go: "1.17"
+  stylecheck:
+    go: "1.17"
+  cyclop:
+    max-complexity: 13
+  tagliatelle:
+    case:
+      use-field-name: true
+      rules:
+        # support string case: `camel`, `pascal`, `kebab`, `snake`, `goCamel`, `goPascal`, `goKebab`, `goSnake`, `upper`, `lower`
+        json: snake
+        yaml: snake
+        xml: camel
+        bson: snake
+        avro: snake
+  gomnd:
+    settings:
+      mnd:
+        checks:
+          - argument
+          - case
+          - condition
+          - operation
+          - return
+          - assign
+        ignored-functions: math.*|strconv.*|rand.*|time.*
+        # ignored-numbers: 1000
+        # ignored-files: magic_.*.go
+  errcheck:
+    exclude-functions:
+      - (*os.File).WriteString
+  funlen:
+    lines: 70
+    statements: 40
+  linters-settings:
+    ireturn:
+      allow:
+        - anon
+        - error
+        - empty
+        - stdlib
+      reject:
+  lll:
+    line-length: 150
