@@ -7,7 +7,7 @@ format:
 	go mod tidy
 
 gen-proto:
-	protoc -I=./contracts --go_out=plugins=grpc:investapi contracts/*.proto
+	protoc -I=./contracts --go_out=plugins=grpc:pkg/investapi contracts/*.proto
 
 
 lint-install:
