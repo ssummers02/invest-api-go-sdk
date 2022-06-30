@@ -8,7 +8,7 @@ import (
 
 type UsersInterface interface {
 	// GetAccounts The method of receiving user accounts.
-	GetAccounts() (*pb.GetAccountsResponse, error)
+	GetAccounts() ([]*pb.Account, error)
 	// GetMarginAttributes Calculation of margin indicators on the account.
 	GetMarginAttributes(accountID string) (*pb.GetMarginAttributesResponse, error)
 	// GetUserTariff Request for the user's tariff.
@@ -31,7 +31,7 @@ func NewUsersService(conn *grpc.ClientConn, config Config) *UsersService {
 	}
 }
 
-func (us *UsersService) GetAccounts() (*pb.GetAccountsResponse, error) {
+func (us *UsersService) GetAccounts() ([]*pb.Account, error) {
 	ctx, cancel := CreateRequestContext(us.config)
 	defer cancel()
 
@@ -41,7 +41,7 @@ func (us *UsersService) GetAccounts() (*pb.GetAccountsResponse, error) {
 		return nil, err
 	}
 
-	return response, nil
+	return response.Accounts, nil
 }
 
 func (us *UsersService) GetMarginAttributes(accountID string) (*pb.GetMarginAttributesResponse, error) {

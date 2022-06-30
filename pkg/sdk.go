@@ -1,5 +1,11 @@
 package pkg
 
+import (
+	"errors"
+
+	pb "github.com/ssummers02/invest-api-go-sdk/pkg/investapi"
+)
+
 // ServicePool is a ready-to-use scope for all available non-stream services.
 type ServicePool struct {
 	UsersInterface
@@ -40,4 +46,20 @@ func NewServicePool(cfg Config) (*ServicePool, error) {
 		StopOrdersInterface:       NewStopOrdersService(conn, cfg),
 		SandboxInterface:          NewSandboxService(conn, cfg),
 	}, nil
+}
+
+func (sp *ServicePool) GetLastPricesForAll() ([]*pb.LastPrice, error) {
+	base, err := sp.GetSharesBase()
+	if err != nil {
+		return nil, err
+	}
+	if len(base) == 0 {
+		return nil, errors.New("no shares found")
+	}
+
+	figis := make([]string, len(base))
+	for i, instrument := range base {
+		figis[i] = instrument.Figi
+	}
+	return sp.GetLastPrices(figis)
 }
