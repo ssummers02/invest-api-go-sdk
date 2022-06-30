@@ -48,6 +48,14 @@ type InstrumentsInterface interface {
 	GetFavorites() ([]*pb.FavoriteInstrument, error)
 	// EditFavorites The method of editing the selected instruments.
 	EditFavorites(newFavourites *pb.EditFavoritesRequest) ([]*pb.FavoriteInstrument, error)
+	// GetSharesBase Get a list of stocks available for trading via API
+	GetSharesBase() ([]*pb.Share, error)
+	// GetETFsBase Get a list of investment funds available for trading via API
+	GetETFsBase() ([]*pb.Etf, error)
+	// GetBondsBase Get a list of bonds available for trading via API
+	GetBondsBase() ([]*pb.Bond, error)
+	// GetFuturesBase Get a list of futures available for trading via API
+	GetFuturesBase() ([]*pb.Future, error)
 }
 
 type InstrumentsService struct {
@@ -101,6 +109,10 @@ func (is *InstrumentsService) Bonds(status pb.InstrumentStatus) ([]*pb.Bond, err
 	}
 
 	return res.Instruments, nil
+}
+
+func (is *InstrumentsService) GetBondsBase() ([]*pb.Bond, error) {
+	return is.Bonds(pb.InstrumentStatus_INSTRUMENT_STATUS_BASE)
 }
 
 func (is *InstrumentsService) GetBondCoupons(figi string, from, to *timestamp.Timestamp) ([]*pb.Coupon, error) {
@@ -171,6 +183,10 @@ func (is *InstrumentsService) Etfs(status pb.InstrumentStatus) ([]*pb.Etf, error
 	return res.Instruments, nil
 }
 
+func (is *InstrumentsService) GetETFsBase() ([]*pb.Etf, error) {
+	return is.Etfs(pb.InstrumentStatus_INSTRUMENT_STATUS_BASE)
+}
+
 func (is *InstrumentsService) FutureBy(filters *pb.InstrumentRequest) (*pb.Future, error) {
 	ctx, cancel := CreateRequestContext(is.config)
 	defer cancel()
@@ -197,6 +213,10 @@ func (is *InstrumentsService) Futures(status pb.InstrumentStatus) ([]*pb.Future,
 	return res.Instruments, nil
 }
 
+func (is *InstrumentsService) GetFuturesBase() ([]*pb.Future, error) {
+	return is.Futures(pb.InstrumentStatus_INSTRUMENT_STATUS_BASE)
+}
+
 func (is *InstrumentsService) ShareBy(filters *pb.InstrumentRequest) (*pb.Share, error) {
 	ctx, cancel := CreateRequestContext(is.config)
 	defer cancel()
@@ -221,6 +241,10 @@ func (is *InstrumentsService) Shares(status pb.InstrumentStatus) ([]*pb.Share, e
 	}
 
 	return res.Instruments, nil
+}
+
+func (is *InstrumentsService) GetSharesBase() ([]*pb.Share, error) {
+	return is.Shares(pb.InstrumentStatus_INSTRUMENT_STATUS_BASE)
 }
 
 func (is *InstrumentsService) GetAccruedInterests(figi string, from, to *timestamp.Timestamp) ([]*pb.AccruedInterest, error) {
